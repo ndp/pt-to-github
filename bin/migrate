@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "octokit"
+require "pathname"
+
+require "pt_to_github"
+
+
+if ARGV.length < 2
+  puts "Usage: bin/migrate <path_to_csv> <repo_name>"
+  exit 1
+end
+
+csv_path = Pathname.new(ARGV[0])
+repo_name = ARGV[1]
+
+# Can use either login/password or access_token
+# client = Octokit::Client.new(login: ENV["GITHUB_USERNAME"], password: ENV["GITHUB_PASSWORD"])
+client = Octokit::Client.new(access_token: ENV["GITHUB_ACCESS_TOKEN"])
+
+# A map of name in PT to github usernames.
+# It'll try and assign the issue to the github user
+# if it finds a match to the owners in PT.
+user_map = {
+  "Sean Collings" => "seanrcollings",
+}
+
+migrator = PtToGithub::Migrator.new(
+  path: csv_path,
+  client: client,
+  repo: repo_name,
+  user_map: user_map
+)
+
+migrator.run
+
+
