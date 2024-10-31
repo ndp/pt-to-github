@@ -24,6 +24,9 @@ client = Octokit::Client.new(access_token: ENV["GITHUB_ACCESS_TOKEN"])
 # if it finds a match to the owners in PT.
 user_map = {
   "Sean Collings" => "seanrcollings",
+  "Andrew J. Peterson" => "ndp",
+  "Andrew Peterson" => "ndp",
+  "Andy Peterson" => "ndp",
 }
 
 migrator = PtToGithub::Migrator.new(
