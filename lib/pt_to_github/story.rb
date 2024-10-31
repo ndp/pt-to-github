@@ -15,22 +15,8 @@ module PtToGithub
 
     def description
       begin
-        description = "
-  This issue was imported from Pivotal Tracker.
-
-  | Field | Value |
-  | --- | --- |
-  | Story ID | [##{id}](#{url}) |
-  | State | #{current_state} |
-  | Requested By | #{requested_by} |
-  | Owned By | #{owned_by.join(", ")} |
-  | Estimate | #{estimate} |
-  | Priority | #{priority} |
-  | Created At | #{created_at} |
-  | Accepted At | #{accepted_at} |
-      "
-
-        description += "\n## Description\n#{@row[:description]}" if @row[:description]
+        description = ""
+        description += "#{@row[:description]}" if @row[:description]
 
         if blockers.any?
           description += "\n\n## Blockers\n"
@@ -47,6 +33,24 @@ module PtToGithub
           description += pull_requests.map { |p| "- #{p}" }.join("\n")
         end
 
+        description += "
+        
+This issue was imported from Pivotal Tracker.
+
+| Field | Value |
+| --- | --- |
+| Story ID | [##{id}](#{url}) |
+| State | #{current_state} |
+| Requested By | #{requested_by} |
+| Created At | #{created_at} |
+"
+
+        description += "| Estimate | #{estimate} |
+" unless estimate.nil? || estimate.empty?
+
+        description += "| Accepted At | #{accepted_at} |
+" unless accepted_at.nil? || accepted_at.empty?
+      
         description
       end
     end
