@@ -33,5 +33,5 @@ Gem::Specification.new do |spec|
   # guide at: https://bundler.io/guides/creating_gem.html
 
   spec.add_dependency "octokit"
-  spec.add_dependency "debug"
+  # spec.add_dependency "debug"
 end
